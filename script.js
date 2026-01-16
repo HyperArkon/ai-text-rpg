@@ -1,3 +1,4 @@
+console.log("script.js loaded");
 const gameLog = document.getElementById("game-log");
 const input = document.getElementById("player-input");
 
