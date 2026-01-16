@@ -18,7 +18,29 @@ async function sendAction() {
   story.push({ role: "user", content: playerText });
   input.value = "";
 
-  addToLog("<em>AI is thinking...</em>");
+  const thinkingId = Date.now();
+  addToLog(`<em id="thinking-${thinkingId}">AI is thinking...</em>`);
 
-  // AI CALL GOES HERE (next step)
-}
+  try {
+    const response = await fetch("https://YOUR-WORKER-URL.workers.dev", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ messages: story })
+    });
+
+    const data = await response.json();
+
+    document.getElementById(`thinking-${thinkingId}`)?.remove();
+
+    if (!data.reply) {
+      throw new Error(data.error || "No reply returned");
+    }
+
+    story.push({ role: "assistant", content: data.reply });
+    addToLog(`<strong>DM:</strong> ${data.reply}`);
+
+  } catch (err) {
+    document.getElementById(`thinking-${thinkingId}`)?.remove();
+    addToLog(`<span style="color:red;">Error: ${err.message}</span>`);
+    console.error(err);
+  }
