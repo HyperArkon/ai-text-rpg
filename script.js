@@ -22,7 +22,7 @@ async function sendAction() {
   addToLog(`<em id="thinking-${thinkingId}">AI is thinking...</em>`);
 
   try {
-    const response = await fetch("https://-ai-text-rpg.zackeryp2345.workers.dev", {
+    const response = await fetch("https://ai-text-rpg.zackeryp2345.workers.dev", {
       method: "POST",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify({ messages: story })
